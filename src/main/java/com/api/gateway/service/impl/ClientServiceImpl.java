@@ -2,6 +2,7 @@ package com.api.gateway.service.impl;
 
 import com.api.gateway.data.dto.JasonHistoryDto;
 import com.api.gateway.data.dto.JsonCurrentDto;
+import com.api.gateway.data.dto.XmlDtoCurrent;
 import com.api.gateway.data.entity.*;
 import com.api.gateway.data.repository.ClientRepository;
 import com.api.gateway.error.Error;
@@ -50,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
         rate.setCurrency(dto.getCurrency());
         for (CurrencyRate currencyRate : list) {
             Currency currency = currencyRate.getCurrency();
-            if (currencyRate.getCurrency().equals(dto.getCurrency())) {
+            if (currency.equals(dto.getCurrency())) {
                 rate.setRate(currencyRate.getRate());
                 rate.setId(currencyRate.getId());
                 break;
@@ -101,5 +102,12 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.saveAndFlush(client);
     }
 
+    @Override
+    public CurrencyRate getCurrentXML(XmlDtoCurrent dto) {
+       CurrencyRate currencyRate=new CurrencyRate();
+       
 
+
+        return currencyRate;
+    }
 }
