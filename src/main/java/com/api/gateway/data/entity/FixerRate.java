@@ -6,11 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 import java.util.List;
 
@@ -29,9 +27,9 @@ public class FixerRate extends BaseEntity {
     private Currency base;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "currency_rate_id")
     private List<CurrencyRate> rates;
 
@@ -39,21 +37,20 @@ public class FixerRate extends BaseEntity {
     public FixerRate(FixerDTO fixerDTO) {
         this.timestamp = fixerDTO.getTimestamp();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            this.date = format.parse(fixerDTO.getDate());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.base=fixerDTO.getBase();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.date = LocalDate.parse(fixerDTO.getDate(), formatter);
+        DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        List<CurrencyRate> currencyRates= new ArrayList<>();
-        fixerDTO.getRates().forEach((k,v)->{
-            CurrencyRate currencyRate= new CurrencyRate();
+        this.base = fixerDTO.getBase();
+
+        List<CurrencyRate> currencyRates = new ArrayList<>();
+        fixerDTO.getRates().forEach((k, v) -> {
+            CurrencyRate currencyRate = new CurrencyRate();
             currencyRate.setCurrency(Currency.valueOf(k));
-            currencyRate.setRate(v);
+            currencyRate.setRate(Double.valueOf(v));
             currencyRates.add(currencyRate);
         });
-        this.rates=currencyRates;
+        this.rates = currencyRates;
+        System.out.println();
     }
 }

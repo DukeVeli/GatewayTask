@@ -2,13 +2,12 @@ package com.api.gateway.controller;
 
 import com.api.gateway.data.dto.JasonHistoryDto;
 import com.api.gateway.data.dto.JsonCurrentDto;
-import com.api.gateway.data.entity.Client;
+import com.api.gateway.data.entity.CurrencyRate;
 import com.api.gateway.data.entity.FixerRate;
+import com.api.gateway.error.Error;
 import com.api.gateway.service.ClientService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,16 +23,21 @@ public class JsonApiController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/current")
-    public FixerRate getCurrent (@RequestBody JsonCurrentDto dto){
-
-       FixerRate fixerRate = clientService.getCurrent(dto);
-
+    public CurrencyRate getCurrent(@RequestBody JsonCurrentDto dto) {
+        CurrencyRate fixerRate = clientService.getCurrent(dto);
+        if (fixerRate == null) {
+            throw new Error("Error");
+        }
         return fixerRate;
     }
 
     @PostMapping("/history")
-    public List<FixerRate> getHistory (@RequestBody JasonHistoryDto dto){
-        List<FixerRate> fixerRates = clientService.getFixerRates(dto);
+    public List<CurrencyRate> getHistory(@RequestBody JasonHistoryDto dto) {
+        List<CurrencyRate> fixerRates = clientService.getFixerRates(dto);
+        if (fixerRates == null) {
+            throw new Error("Error");
+        }
+        System.out.println();
 
         return fixerRates;
     }

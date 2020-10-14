@@ -4,7 +4,7 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org"
 >
-<th:block th:include="~{_shared/head}"/>
+
 <body>
 
 <main>
@@ -18,21 +18,11 @@
         </th:block>
         <h2 th:text="'Error name: '+ ${message.toString()} +'!'"> </h2>
 
-        <h3><a href="/explore/home">Explore</a> the Solar System</h3>
 
-        <th:block th:if="${session.username == null}">
-            <h3><a href="/auth/login">Log In</a> if you have an account or
-                <a href="/auth/register">Register</a> now and see the space.
-            </h3>
-        </th:block>
-
-        <th:block th:unless="${session.username == null}">
-            <h3>Go to <a href="/user/profile">Profile</a></h3>
-        </th:block>
 
 
     </div>
 </main>
-<th:block th:include="~{_shared/footer}"/>
+
 </body>
 </html>

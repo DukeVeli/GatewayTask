@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,8 +21,8 @@ public class Client extends BaseEntity {
     private Currency currency;
 
     @Column(name = "timestamp", nullable = false)
-    private int timestamp;
+    private long timestamp;
 
-    @OneToMany
-    private Set<RequestId> requestId;
+    @OneToMany(mappedBy = "client",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<RequestId> requestId;
 }

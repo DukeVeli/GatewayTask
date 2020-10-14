@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class JasonHistoryDto {
     private String requestId;
-    private int timestamp;
+    private long timestamp;
     private String client;
     private Currency currency;
     private int period;
